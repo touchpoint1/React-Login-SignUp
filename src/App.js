@@ -1,20 +1,57 @@
-import { Routes, Route } from "react-router-dom";
-import LoginCont from "./components/LoginCont";
-import SignupCont from "./components/SignupCont";
-import SvgCom from "./components/SvgCom";
+import { useEffect } from "react";
+import { Navigate, Outlet, Route, Routes, useLocation } from "react-router-dom";
+import { AuthLayout, ClientLayout } from "layouts";
+import routes from "routes";
+import Home from "views/home";
 
-export default function App() {
+function App() {
+  const location = useLocation();
+  let layout;
+
+  useEffect(() => {
+    routes.forEach((route) =>
+      location.pathname.includes(route.path)
+        ? (document.title = `TouchPoint: ${route.name}`)
+        : null
+    );
+  }, [location]);
+
+  const getRoutes = (routes, layout) => {
+    console.log(layout);
+    return routes.map((route, i) => {
+      if (route.layout === layout) {
+        return <Route path={route.path} element={route.component} key={i} />;
+      }
+
+      return null;
+    });
+  };
+
   return (
-    <div className=" bg-gray-200 ">
-      <div class="container px-5 py-24 mx-auto flex flex-wrap items-center">
-        <div class="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0 ">
-          <SvgCom />
-        </div>
-        <Routes>
-          <Route path="LoginCont" element={<LoginCont />}></Route>
-          <Route path="SignupCont" element={<SignupCont />}></Route>
-        </Routes>
-      </div>
-    </div>
+    <Routes>
+      <Route path="/" element={<Navigate to={routes[0].path} />} />
+      <Route
+        path="/"
+        element={
+          <ClientLayout>
+            <Outlet />
+          </ClientLayout>
+        }
+      >
+        {getRoutes(routes, (layout = "client"))}
+      </Route>
+      <Route
+        path="/auth"
+        element={
+          <AuthLayout>
+            <Outlet />
+          </AuthLayout>
+        }
+      >
+        {getRoutes(routes, (layout = "auth"))}
+      </Route>
+    </Routes>
   );
 }
+
+export default App;
