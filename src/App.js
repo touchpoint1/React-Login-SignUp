@@ -1,20 +1,29 @@
-import { Routes, Route } from "react-router-dom";
-import LoginCont from "./components/LoginCont";
-import SignupCont from "./components/SignupCont";
-import SvgCom from "./components/SvgCom";
-
-export default function App() {
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
+import LoginPage from "./pages/login";
+import SignupPage from "./pages/signup";
+import img1 from "./image/undraw_sign_up_n6im.svg";
+function App() {
   return (
-    <div className=" bg-gray-200 ">
-      <div class="container px-5 py-24 mx-auto flex flex-wrap items-center">
-        <div class="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0 ">
-          <SvgCom />
-        </div>
-        <Routes>
-          <Route path="LoginCont" element={<LoginCont />}></Route>
-          <Route path="SignupCont" element={<SignupCont />}></Route>
-        </Routes>
-      </div>
+    <>
+  <div className="min-h-full h-screen flex items-center justify-end py-12 mr-20 sm:px-6 lg:px-8">
+    <div>
+       <img src={img1} alt="svg"></img>
     </div>
+    <div className="max-w-md w-full space-y-8">
+     <BrowserRouter>
+       <Routes>
+          <Route path="/" element={<LoginPage/>} />
+          <Route path="/signup" element={<SignupPage/>} />
+       </Routes>
+     </BrowserRouter>
+    </div>
+  </div>
+   </>
   );
 }
+
+export default App;
